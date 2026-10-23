@@ -10,22 +10,7 @@ reach the flag on *any* instance, not just a hardcoded answer.
 
 | Competition | Date | Result |
 | --- | --- | --- |
-| [Black Hat MEA CTF 2026 Qualifiers](blackhat-mea-26-quals/) | Oct 2026 | 227 pts |
-| [pwnsec CTF 2026](pwnsec-2026/) | Oct 2026 | 1st place, human division |
-
-## Writeups
-
-### [Black Hat MEA CTF 2026 Qualifiers](blackhat-mea-26-quals/)
-
-| Challenge | Category | Idea |
-| --- | --- | --- |
-| [Popcnt Oracle](blackhat-mea-26-quals/popcnt-oracle/) | Crypto | RSA popcount oracle leaks the binary expansion of `m/n`; repair the one-sided noise with redundant chains and a DFS |
-| [TripleR](blackhat-mea-26-quals/tripler/) | Crypto (hard) | AES-GCM nonce reuse plus multi-byte UTF-8 characters makes half-tags linear in the key |
-| [teto](blackhat-mea-26-quals/teto/) | Pwn | A Tetris clone whose bounds check *is* the field the write corrupts — one OR-bit per piece, all the way up to `main`'s saved return |
-
-### [pwnsec CTF 2026](pwnsec-2026/)
-
-Writeups in progress.
+| [Black Hat MEA CTF 2026 Qualifiers](blackhat-mea-26-quals/) | Aug 2026 | 227 place |
 
 ## Layout
 

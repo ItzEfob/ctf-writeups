@@ -1,6 +1,6 @@
 # Black Hat MEA CTF 2026 Qualifiers
 
-Played October 2026. Final score: 227 points.
+Played August 2026. Final score: 227 place
 
 | Challenge | Category | Idea |
 | --- | --- | --- |
