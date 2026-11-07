@@ -1,37 +1,23 @@
 # chronosCTF 2026
 
-My writeups from chronosCTF (November 2026).
+Played November 2026. Final score: TBD
 
-| Category | Challenge | Difficulty | Status | Writeup |
-|---|---|---|---|---|
-| OSINT | Cloudflare Deanon (3 tasks) | Easy / Medium / Medium | solved | [cloudflare-deanon.md](osint/cloudflare-deanon.md) |
-| OSINT | Onion Deanon 1: ParsnipLocker (4 tasks) | Easy / Easy / Medium / Medium | solved | [onion-deanon-1-parsniplocker.md](osint/onion-deanon-1-parsniplocker.md) |
-| OSINT | Onion Deanon 2: DarkPigeon | Easy | solved | [onion-deanon-2-darkpigeon.md](osint/onion-deanon-2-darkpigeon.md) |
-| Forensics | The Layer That Wouldn't Die | Easy | solved | [the-layer-that-wouldnt-die.md](forensics/the-layer-that-wouldnt-die.md) |
-| Network | Silent Orbit | Easy | solved | [silent-orbit.md](network/silent-orbit.md) |
-| Network | Operation Silent Ward | Hard | not solved | [operation-silent-ward.md](network/operation-silent-ward.md) |
+| Challenge | Category | Difficulty | Idea |
+| --- | --- | --- | --- |
+| [Cloudflare Deanon](cloudflare-deanon/) | OSINT | Easy / Medium / Medium | The origin answers on its own IP, so a Censys search for the site's unique `<title>` (excluding Cloudflare's ASN) finds it; the back office is on port 8080 |
+| [Onion Deanon 1: ParsnipLocker](onion-deanon-1-parsniplocker/) | OSINT | Easy / Easy / Medium / Medium | The onion's self-signed certificate is also served on the public IP; one Censys fingerprint search finds the host and its unauthenticated panel |
+| [Onion Deanon 2: DarkPigeon](onion-deanon-2-darkpigeon/) | OSINT | Easy | Shodan-style favicon hash: `mmh3` over `base64.encodebytes` (newline-wrapped, signed) |
+| [The Layer That Wouldn't Die](the-layer-that-wouldnt-die/) | Forensics | Easy | `rm` only whites out the marker; unseal with the layer-2 marker as it stood when the seal was built, not the intruder's rev-B overwrite |
+| [Silent Orbit](silent-orbit/) | Network | Easy | Implement the CFDP relay from the mission profile, skip the off-APID and wrong-transaction decoys, merge coverage, and serialize the NAK for the 12 missing bytes |
+| [Operation Silent Ward](operation-silent-ward/) | Network | Hard | *Unsolved.* Decrypted the UTF-8-damaged exfil stream and found a serial-XOR'd `PATRECORDS_LEAK` marker in each C-STORE, but couldn't pin down "the" anomalous timestamp |
 
-## Things I'll reuse
+None of these used per-instance flags. The OSINT chains were live lookups against the
+challenge infrastructure, so their writeups document the investigation path. The
+forensics and network challenges shipped static attachments, and each `solve.py` is
+tested end-to-end against the original files.
 
-**Hidden services leak through their public IP.** All the OSINT deanon chains broke the
-same way: the "hidden" server also answered on its public IP, and scanners had indexed
-something unique about it.
-
-| What leaks | Search |
-|---|---|
-| TLS certificate | Censys `host.services.cert.fingerprint_sha256 = "<sha256>"` |
-| Page title | Censys `host.services.endpoints.http.html_title = "<title>"` |
-| Favicon | Shodan `http.favicon.hash:<mmh3>` |
-
-Then rule out the decoys: CDN ranges (Cloudflare is AS13335), public resolvers, Tor
-relays, and hosts that only matched in the past.
-
-**Other lessons:**
-- **Container images:** `rm` in a later layer doesn't delete anything. Walk the layers
-  in manifest order and read the config history.
-- **XOR with a repeating key:** if a file ends in readable text repeating over and over,
-  that's probably the key showing through zero bytes.
-- **`EF BF BD` in a binary file** means it went through a bad UTF-8 conversion. One lost
-  byte shifts everything after it.
-- **scapy rebuilds packets** instead of showing the raw bytes. When the byte counts don't
-  add up, parse the pcap by hand.
+Every folder has a `README.md` with the full writeup. `onion-deanon-2-darkpigeon/`,
+`the-layer-that-wouldnt-die/` and `silent-orbit/` also include a self-contained
+`solve.py`. The other OSINT folders have no solver, since those steps were searches
+rather than code. `operation-silent-ward/` documents the analysis and every attempt
+that was tried.
