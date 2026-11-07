@@ -1,0 +1,22 @@
+Civil relief relay mission profile (player-facing)
+
+Scope
+- The supplied recording is raw concatenated CCSDS Space Packets: six primary-header octets followed by packet-data-length + 1 user-data octets. Reject a truncated outer recording; do not resynchronise.
+- Process only telemetry packets with PVN 000, APID 0x321, secondary-header flag 0 and sequence flags 11. Each eligible user-data field must be exactly one complete CFDP PDU whose declared data-field length consumes the field exactly. Ignore an ineligible/malformed PDU and continue with later complete packets. Packet sequence counts are diagnostic capture metadata, never file-byte coverage.
+
+Target CFDP transaction
+- Target input is Version 001, direction toward receiver, acknowledged mode, no PDU CRC, small-file flag 0, one-octet source entity ID, transaction sequence number and destination entity ID encodings. Its source/sequence/destination tuple is 0x01/0x07/0x02. Other transactions may share APID 0x321 and never contribute coverage.
+- Target File Data additionally requires segmentation-control 0 and segment-metadata flag 0.
+
+Relay state
+- Start WAIT_METADATA. Accept only the first valid target Metadata: small file size, checksum type 15 (NULL_CHECKSUM), closure flag 0 and no option TLVs. Store its size and enter COLLECT. Later Metadata is ignored.
+- In WAIT_METADATA, target File Data and EOF are permanently discarded.
+- In COLLECT, a target File Data PDU contributes [offset, offset + payload_length) only if its non-wrapping end is at most the stored Metadata size. Duplicates and overlaps merge into coverage.
+- In COLLECT, accept only a target EOF with directive 0x04, No Error condition/spare 0, null checksum 00000000, no fault-location TLV and file size equal to Metadata size. That first accepted EOF snapshots coverage. Other EOFs are ignored.
+
+Required recovery record
+- Complement accepted target coverage in [0, EOF_file_size). Serialize the first deferred NAK PDU toward the file sender: Version 001; File Directive; direction toward sender; acknowledged; no CRC; small-file; tuple 0x01/0x07/0x02; directive 0x08; scope [0, EOF_file_size); then every missing interval as ascending, maximal, non-overlapping [start,end) request pairs. Do not request Metadata.
+- This profile's reverse path permits the resulting one-PDU record. Render all NAK bytes in uppercase hexadecimal and wrap exactly as CSCTF{...}.
+
+Reference grammar
+- CCSDS 133.0-B-2 Space Packet primary header; CCSDS 727.0-B-5 CFDP File Data, Metadata, EOF and NAK grammar. The raw one-PDU mapping, selection and state policy above are fictional relay rules.

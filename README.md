@@ -2,15 +2,17 @@
 
 Writeups and solvers from CTFs I've played, one folder per competition.
 
-Every writeup is tested end-to-end against a local copy of the challenge, and
-targets challenges with per-instance dynamic flags — so each one shows how to
-reach the flag on *any* instance, not just a hardcoded answer.
+Every solver is tested end-to-end against a local copy of the challenge or its
+original attachments. For challenges with per-instance dynamic flags, the
+writeup shows how to reach the flag on *any* instance, not just a hardcoded
+answer. OSINT writeups document the investigation path instead.
 
 ## Competitions
 
 | Competition | Date | Result |
 | --- | --- | --- |
 | [Black Hat MEA CTF 2026 Qualifiers](blackhat-mea-26-quals/) | Aug 2026 | 227 place |
+| [chronosCTF 2026](chronos-26/) | Nov 2026 | TBD |
 
 ## Layout
 
