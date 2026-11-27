@@ -13,7 +13,7 @@ answer. OSINT writeups document the investigation path instead.
 | --- | --- | --- |
 | [Black Hat MEA CTF 2026 Qualifiers](blackhat-mea-26-quals/) | Aug 2026 | 227 place |
 | [chronosCTF 2026](chronos-26/) | Nov 2026 | 42nd place |
-| [Red Reaper CTF 2026](red-reaper-26/) | Nov 2026 | TBD |
+| [Red Reaper CTF 2026](red-reaper-26-quals/) | Nov 2026 | TBD |
 
 ## Layout
 
