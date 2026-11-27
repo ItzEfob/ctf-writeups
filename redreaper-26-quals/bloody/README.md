@@ -2,7 +2,7 @@
 
 | Category | Difficulty | Points | Author |
 |---|---|---|---|
-| OSINT | (warm-up) | | |
+| OSINT | Easy | | |
 
 > Three records contradict each other. One lists a name that the others refuse to acknowledge. Another describes an investigation that officially never happened. The last contains a timestamp but no date. These fragments originate from a Japanese animated series, buried among dozens of recorded episodes.
 >
